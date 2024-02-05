@@ -36,7 +36,7 @@ export class BearerTokenGuard implements CanActivate {
      */
     const user = await this.usersService.getUserByEmail(result.email);
 
-    req.usere = user;
+    req.user = user;
     req.token = token;
     req.tokenType = result.type;
 
