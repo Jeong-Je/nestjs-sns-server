@@ -4,6 +4,7 @@ import { UsersModel } from 'src/users/entities/users.entity';
 import { HASH_ROUNDS, JWT_SECRET } from './const/auth.const';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -156,7 +157,7 @@ export class AuthService {
   }
 
   async registerWithEmail(
-    user: Pick<UsersModel, 'nickname' | 'email' | 'password'>,
+    user: RegisterUserDto,
   ) {
     const hash = await bcrypt.hash(user.password, HASH_ROUNDS);
 

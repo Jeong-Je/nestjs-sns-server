@@ -6,15 +6,16 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
-  Put,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
 import { UsersModel } from 'src/users/entities/users.entity';
 import { User } from 'src/users/decorator/user.decorator';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -34,21 +35,19 @@ export class PostsController {
   @UseGuards(AccessTokenGuard)
   postPost(
     @User('id') userId: number, //AccessTokenGuard의 사용이 먼저 필요함
-    @Body('title') title: string,
-    @Body('content') content: string,
+    @Body() body: CreatePostDto,
     @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ) {
     
-    return this.postsService.createPost(userId, title, content);
+    return this.postsService.createPost(userId, body);
   }
 
-  @Put(':id')
-  putPost(
+  @Patch(':id')
+  patchPost(
     @Param('id', ParseIntPipe) id: number,
-    @Body('title') title?: string,
-    @Body('content') content?: string,
+    @Body() body: UpdatePostDto,
   ) {
-    return this.postsService.updatePost(id, title, content);
+    return this.postsService.updatePost(id, body);
   }
 
   @Delete(':id')
