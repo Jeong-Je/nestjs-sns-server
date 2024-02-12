@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-   DefaultValuePipe,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
-import { UsersModel } from 'src/users/entities/users.entity';
 import { User } from 'src/users/decorator/user.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -30,7 +29,7 @@ export class PostsController {
   getPost(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getPostById(id);
   }
-  
+
   @Post()
   @UseGuards(AccessTokenGuard)
   postPost(
@@ -38,7 +37,6 @@ export class PostsController {
     @Body() body: CreatePostDto,
     @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ) {
-    
     return this.postsService.createPost(userId, body);
   }
 
