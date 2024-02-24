@@ -17,7 +17,6 @@ import { User } from 'src/users/decorator/user.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
-import { UsersModel } from 'src/users/entities/users.entity';
 
 @Controller('posts')
 export class PostsController {
@@ -37,17 +36,21 @@ export class PostsController {
   @UseGuards(AccessTokenGuard)
   async postPostsRandom(@User('id') userId: number) {
     await this.postsService.generatePosts(userId);
-    
-    return true
+
+    return true;
   }
 
   @Post()
   @UseGuards(AccessTokenGuard)
-  postPost(
+  async postPost(
     @User('id') userId: number, //AccessTokenGuard의 사용이 먼저 필요함
     @Body() body: CreatePostDto,
     @Body('isPublic', new DefaultValuePipe(true)) isPublic: boolean,
   ) {
+    if (body.image) {
+      await this.postsService.createPostImage(body);
+    }
+
     return this.postsService.createPost(userId, body);
   }
 
