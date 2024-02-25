@@ -8,14 +8,16 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import { CommonModule } from 'src/common/common.module';
+import { ImageModel } from 'src/common/entity/image.entity';
+import { PostsImageService } from './image/dto/images.service';
 
 @Module({
   imports: [
     JwtModule.register({}),
-    TypeOrmModule.forFeature([PostsModel, UsersModel]),
+    TypeOrmModule.forFeature([PostsModel, UsersModel, ImageModel]),
     CommonModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, AuthService, UsersService],
+  providers: [PostsService, AuthService, UsersService, PostsImageService],
 })
 export class PostsModule {}
