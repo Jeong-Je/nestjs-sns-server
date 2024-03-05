@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
   Delete,
+  ForbiddenException,
   Get,
   InternalServerErrorException,
   Param,
@@ -10,6 +12,7 @@ import {
   Patch,
   Post,
   Query,
+  UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -25,6 +28,7 @@ import { PostsImageService } from './image/dto/images.service';
 import { LogInterceptor } from 'src/common/interceptor/log.interceptor';
 import { TransactionInterceptor } from 'src/common/interceptor/transaction.interceptor';
 import { QueryRunner } from 'src/common/decorator/query-runner.decorator';
+import { HttpExceptionFilter } from 'src/common/exception-filter/http.exception-filter';
 
 @Controller('posts')
 export class PostsController {
@@ -35,8 +39,10 @@ export class PostsController {
   ) {}
 
   @Get()
-  @UseInterceptors(LogInterceptor)
+  // @UseInterceptors(LogInterceptor)
+  @UseFilters(new HttpExceptionFilter())
   getPosts(@Query() query: PaginatePostDto) {
+    // throw new ForbiddenException();
     return this.postsService.paginatePosts(query);
   }
 

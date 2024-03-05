@@ -40,7 +40,7 @@ export class UsersModel extends BaseModel {
   @Length(3, 8, {
     message: lengthValidationMessage,
   })
-  @Exclude()
+  // @Exclude()
   password: string;
 
   @Column({
